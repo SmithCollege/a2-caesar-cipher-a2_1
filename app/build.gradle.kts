@@ -29,3 +29,11 @@ application {
 tasks.named<Test>("test") {
     useJUnit() // ✅ Use JUnit 4 instead of JUnit 5
 }
+
+tasks.test {
+    useJUnit()
+    testLogging {
+        events("PASSED", "FAILED", "SKIPPED")
+        showStandardStreams = true
+    }
+}
