@@ -40,8 +40,8 @@ public class DynamicArrayTests {
         createCount();
 
         DynamicArray<Integer> numberTest = new DynamicArray<Integer>(0, this.count);
-        assertEquals("Is a returned by the 0 index?", numberTest.get(0) == 0);
-        assertTrue("Is z returned by the 9th index?", numberTest.get(9) == 9);
+        assertTrue("Is a returned by the 0 index?", numberTest.get(0) == Integer.valueOf(0));
+        assertTrue("Is z returned by the 9th index?", numberTest.get(9) == Integer.valueOf(9));
     }
 
     @Test

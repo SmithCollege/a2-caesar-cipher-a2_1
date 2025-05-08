@@ -1,57 +1,115 @@
-// Do not change the line below. It lets Gradle find your 
-// Classes to build the project
 package a1template;
 
+/**
+ * Implements a Caesar Cipher for lowercase English letters.
+ * Only lowercase characters ('a' to 'z') are encoded or decoded;
+ * all other characters are left unchanged.
+ */
 public class CaesarCipher {
 
-    /** Character array to store the letters in the alphabet in order */
+    /** The standard alphabet: 'a' to 'z'. */
     Character[] alphabet;
 
-    /** DynamicArray object providing ArrayList-like operations for Characters */
+    /** The shifted cipher alphabet used for encoding and decoding. */
     DynamicArray<Character> cipher;
 
-    /** Private offset that tracks how many positions to shift the index for
-    * This cipher */
+    /** The offset used to shift letters in the cipher. */
     private int offset;
 
-    /** Constructor that should define the instance variables, including
-     * populating the alphabet
-     * @param offset Offset to use when creating `cipher` of DynamicArray type
+    /**
+     * Constructs a CaesarCipher with the specified offset.
+     * The cipher shifts each letter backwards by the offset value.
+     *
+     * @param offset the number of positions to shift in the Caesar cipher
      */
-    CaesarCipher(int offset){
-        // Fill in here
+    CaesarCipher(int offset) {
+        this.offset = offset;
+
+        this.alphabet = new Character[26];
+        for (int i = 0; i < 26; i++) {
+            this.alphabet[i] = (char) ('a' + i);
+        }
+
+        // Create shifted cipher alphabet based on offset
+        Character[] shifted = new Character[26];
+        for (int i = 0; i < 26; i++) {
+            int shiftedIndex = (i - offset + 26) % 26; 
+            shifted[i] = this.alphabet[shiftedIndex];
+        }
+
+        this.cipher = new DynamicArray<>(26, shifted);
     }
 
-    /** Implementation of linear search that looks through the alphabet
-     * array to identify the position of the passed value
-     * @param val character to search for
-     * @return int indicating position of val in the alphabet array
+    /**
+     * Finds the index of the given character in the alphabet array.
+     *
+     * @param val the character to look for
+     * @return the index of the character if found, or -1 if not found
      */
-    public int findIndex(char val){
-        // This is a stub -- fill in the code and return the
-        // value you calculate
-        return 0;
+    public int findIndex(char val) {
+        for (int i = 0; i < alphabet.length; i++) {
+            if (alphabet[i] == val) {
+                return i;
+            }
+        }
+        return -1;
     }
 
-    /** Encode a message using the cipher
-     * @param T message to encode
-     * @return encoded message */  
-    public String encode(String message){
-        // Fill in here and update return statement based on your code
-        return new String(); 
-     }
-
-    /** Decode a message using the cipher 
-     * @param String message to decode
-     * @param int key to use in decoding
-     * @return decoded message
-    */
-    public String decode(String message){
-        // Fill in here and update return statement based on your code
-        return new String();
+    /**
+     * Returns the character at the given index from the cipher.
+     *
+     * @param index the index to access
+     * @return the cipher character at that index
+     */
+    public char get(int index) {
+        return cipher.get(index);
     }
 
-    public static void main(String[] args) {
+    /**
+     * Encodes a message using the Caesar cipher.
+     * Only lowercase alphabetic characters are transformed;
+     * all other characters are left unchanged.
+     *
+     * @param message the original message to encode
+     * @return the encoded message
+     */
+    public String encode(String message) {
+        StringBuilder encoded = new StringBuilder();
+        for (char c : message.toCharArray()) {
+            int idx = findIndex(c);
+            if (idx != -1) {
+                encoded.append(cipher.get(idx));
+            } else {
+                encoded.append(c);
+            }
+        }
+        return encoded.toString();
     }
-    
+
+    /**
+     * Decodes a message encoded with the Caesar cipher.
+     * Only lowercase alphabetic characters are transformed;
+     * all other characters are left unchanged.
+     *
+     * @param message the encoded message to decode
+     * @return the original decoded message
+     */
+    public String decode(String message) {
+        StringBuilder decoded = new StringBuilder();
+        for (char c : message.toCharArray()) {
+            int idx = -1;
+            for (int i = 0; i < 26; i++) {
+                if (cipher.get(i) == c) {
+                    idx = i;
+                    break;
+                }
+            }
+            if (idx != -1) {
+                decoded.append(alphabet[idx]);
+            } else {
+                decoded.append(c);
+            }
+        }
+        return decoded.toString();
+    }
 }
